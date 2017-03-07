@@ -18,6 +18,17 @@ public:
 protected:
     Card hand[CARDS_IN_HAND];
     int cardIndex;
+    bool flush;
+    bool straight;
+    bool royalStraight;
+    bool straightFlush;
+    bool royalFlush;
+    bool fourOfAKind;
+    bool threeOfAKind;
+    bool twoPair;
+    bool onePair;
+    bool fullHouse;
+    int highestCard;
 };
 
 #endif // HAND_H

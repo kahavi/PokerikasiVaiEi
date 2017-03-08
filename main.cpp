@@ -2,6 +2,8 @@
 #include "deckofcards.h"
 #include "hand.h"
 
+//Anything more than 10 hands will cause a potential error,
+//where the same card can be dealt again
 #define NUMBER_OF_HANDS 3
 
 using namespace std;
@@ -20,12 +22,12 @@ int main()
             hands[j].addCard(deck->draw());
         }
 
-    cout << "Hand 0: ";
-    hands[0].analyzeHand();
-    cout << "Hand 1: ";
-    hands[1].analyzeHand();
-    cout << "Hand 2: ";
-    hands[2].analyzeHand();
+    //Analyze each hand
+    for(int i = 0; i < NUMBER_OF_HANDS; i++)
+    {
+        cout << "Hand " + to_string(i) + ": ";
+        hands[i].analyzeHand();
+    }
 
     return 0;
 }

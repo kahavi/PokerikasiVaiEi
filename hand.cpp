@@ -19,25 +19,34 @@ void Hand::addCard(Card addedCard)
         cout << "Hand is full" << endl;
 }
 
+struct Hand::handValue{
+    bool royalFlush;
+    bool straightFlush;
+    bool fourOfAKind;
+    bool fullHouse;
+    bool flush;
+    bool straight;
+    bool threeOfAKind;
+    bool twoPair;
+    bool onePair;
+    bool royalStraight;
+    handValue() {
+        flush = straight = royalStraight = straightFlush = royalFlush = fourOfAKind = threeOfAKind = twoPair = onePair = fullHouse = false;
+    }
+};
+
 void Hand::analyzeHand()
 {
-    //Reset all checks
-    flush = false;
-    straight = false;
-    royalStraight = false;
-    straightFlush = false;
-    royalFlush = false;
-    fourOfAKind = false;
-    threeOfAKind = false;
-    twoPair = false;
-    onePair = false;
-    fullHouse = false;
+    //Reset all flags by calling the constructor of handValue
+    handValue hv;
+    //0 is Ace, so set to -1
     highestCard = -1;
 
     //Lets first determine how many cards of each value and suit we have
     //Order is the same we used before:
     string faces[] = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
     string suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+
     int cardsByValue[13] = {0};
     int cardsBySuit[4] = {0};
     int straightCounter = 0;
@@ -72,7 +81,7 @@ void Hand::analyzeHand()
     //Flush
     for(int i = 0; i < 4; i++)
     {
-        if(cardsBySuit[i] == 5) flush = true;
+        if(cardsBySuit[i] == 5) hv.flush = true;
     }
 
     //Straight
@@ -83,7 +92,7 @@ void Hand::analyzeHand()
 
         if(straightCounter == 5)
         {
-            straight = true;
+            hv.straight = true;
             break;
         }
 
@@ -91,45 +100,45 @@ void Hand::analyzeHand()
         if(straightCounter == 4 && i == 12 && cardsByValue[0] > 0)
         {
             //Royal Straight is not a hand, but we use it to check for a Royal Flush
-            royalStraight = true;
+            hv.royalStraight = true;
         }
     }
 
-    //Straight Flush
-    if(flush && straight)
+    //Royal Flush
+    if(hv.flush && hv.royalStraight)
     {
-        straightFlush = true;
+        hv.royalFlush = true;
     }
 
-    //Royal Flush
-    if(flush && royalStraight)
+    //Straight Flush
+    if(hv.flush && hv.straight)
     {
-        royalFlush = true;
+        hv.straightFlush = true;
     }
 
     //Four of a kind
     for(int i = 0; i < 13; i++)
     {
-        if(cardsByValue[i] == 4) fourOfAKind = true;
+        if(cardsByValue[i] == 4) hv.fourOfAKind = true;
     }
 
     //Three of a kind
     for(int i = 0; i < 13; i++)
     {
-        if(cardsByValue[i] == 3) threeOfAKind = true;
+        if(cardsByValue[i] == 3) hv.threeOfAKind = true;
     }
 
     //Pairs
     for(int i = 0; i < 13; i++)
     {
         //Only check if we have found a pair on a previous loop
-        if(cardsByValue[i] >= 2 && onePair) twoPair = true;
+        if(cardsByValue[i] >= 2 && hv.onePair) hv.twoPair = true;
         //If we have a three of a kind, we don't want to check for pairs
-        if(cardsByValue[i] >= 2 && !threeOfAKind) onePair = true;
+        if(cardsByValue[i] >= 2 && !hv.threeOfAKind) hv.onePair = true;
     }
 
     //Full house
-    if(threeOfAKind && onePair) fullHouse = true;
+    if(hv.threeOfAKind && hv.onePair) hv.fullHouse = true;
 
     //Highest card
     for(int i = 0; i < 13; i++)
@@ -140,15 +149,14 @@ void Hand::analyzeHand()
         }
     }
 
-
-    if(royalFlush)          cout << "Royal Flush" << endl;
-    else if(straightFlush)  cout << "Straight Flush" << endl;
-    else if(fourOfAKind)    cout << "Four of a kind" << endl;
-    else if(fullHouse)      cout << "Full house" << endl;
-    else if(flush)          cout << "Flush" << endl;
-    else if(straight)       cout << "Straight" << endl;
-    else if(threeOfAKind)   cout << "Three of a kind" << endl;
-    else if(twoPair)        cout << "Two pair" << endl;
-    else if(onePair)        cout << "Pair" << endl;
+    if(hv.royalFlush)          cout << "Royal Flush" << endl;
+    else if(hv.straightFlush)  cout << "Straight Flush" << endl;
+    else if(hv.fourOfAKind)    cout << "Four of a kind" << endl;
+    else if(hv.fullHouse)      cout << "Full house" << endl;
+    else if(hv.flush)          cout << "Flush" << endl;
+    else if(hv.straight)       cout << "Straight" << endl;
+    else if(hv.threeOfAKind)   cout << "Three of a kind" << endl;
+    else if(hv.twoPair)        cout << "Two pair" << endl;
+    else if(hv.onePair)        cout << "Pair" << endl;
     else cout << "Highest card: " + faces[highestCard] << endl;
 }

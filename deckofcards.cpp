@@ -32,6 +32,5 @@ void DeckOfCards::shuffle()
     //Change the random seed so we don't get the same deck every time
     srand(time(0));
     random_shuffle(std::begin(deck), std::end(deck));
-    cout << "Deck shuffled" << endl;
     cardIndex = 0;
 }

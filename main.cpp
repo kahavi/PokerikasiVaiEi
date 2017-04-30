@@ -1,3 +1,11 @@
+/**
+ *  This is a program that deals a set number of hands,
+ *  and analyses if they have any poker hands present.
+ *
+ *  Made by Teemu Kolu
+ **/
+
+
 #include <iostream>
 #include "deckofcards.h"
 #include "hand.h"
@@ -22,7 +30,7 @@ int main()
             hands[j].addCard(deck->draw());
         }
 
-    //Analyze each hand
+    //Analyse each hand
     for(int i = 0; i < NUMBER_OF_HANDS; i++)
     {
         cout << "Hand " + to_string(i) + ": ";
